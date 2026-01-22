@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/home.css'%}">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <header class="menu">
+
+        <ul>
+            <li><a href="">Início</a></li>
+            <li><a href="">Dados</a></li>
+        </ul>
+
+    </header>
+
+    <section class="forms-section">
+
+        <div class="formularios">
+
+            <!-- ======================================
+                    TRANSAÇÕES
+        ====================================== -->
+            <form method="post" class="form-container">
+                {% csrf_token %}
+                <!-- input pra especificar -->
+                <input type="hidden" name="tipo_form" value="transacao">
+
+                <h2>Nova Transação</h2>
+
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao_t" maxlength="100" required>
+
+                <label for="valor">Valor (R$)</label>
+                <input type="number" id="valor" name="valor" step="0.01" required>
+
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" required>
+
+                <label for="categoria">Categoria</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="">Selecione</option>
+                    {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">
+                        {{ categoria.nome }} ({{ categoria.get_tipo_display }})
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <label for="conta">Conta</label>
+                <select id="conta" name="nome_conta" required>
+                    <option value="">Selecione</option>
+                    {% for conta in contas %}
+                    <option value="{{ conta.id }}">{{ conta.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="observacoes">Observações</label>
+                <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+
+                <button type="submit">Salvar Transação</button>
+            </form>
+
+            <div class="forms-direita">
+
+                <!-- ======================================
+                            CATEGORIAS
+                ====================================== -->
+
+                <div class="caixa-categoria">
+
+                    <form method="post" class="form-container">
+                        {% csrf_token %}
+                        <!-- input pra especificar -->
+                        <input type="hidden" name="tipo_form" value="categoria">
+
+                        <h2>Nova Categoria</h2>
+
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome_cat" maxlength="100" required>
+
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" name="descricao_cat" rows="3"></textarea>
+
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="">Selecione</option>
+                            <option value="receita">Receita</option>
+                            <option value="despesa">Despesa</option>
+                        </select>
+
+                        <div class="btns">
+                            <button type="submit">Salvar</button>
+                            <button type="button" onclick="abrirModal()">Excluir categoria</button>
+                        </div>
+
+                    </form>
+
+                    <div class="caixa-excluir">
+                        <h3>Selecione as categorias para excluir</h3>
+
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="tipo_form" value="deletar_categorias">
+
+                            {% for categoria in categorias %}
+                            <div class="opcs-categorias">
+                                <label for="cat{{ categoria.id }}">{{ categoria.nome }}</label>
+                                <input type="checkbox" name="ids_para_deletar" value="{{ categoria.id }}" id="cat{{ categoria.id }}">
+                            </div>
+                            {% endfor %}
+
+                            <div class="btns-excluir">
+                                <button type="button" onclick="fecharModal()">Cancelar</button>
+                                <button type="submit">Deletar Selecionados</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- ======================================
+                            CONTAS
+                 ====================================== -->
+                <form method="post" class="form-container">
+                    {% csrf_token %}
+                    <!-- input pra especificar -->
+                    <input type="hidden" name="tipo_form" value="contas">
+
+                    <h2>Nova Conta</h2>
+
+                    <label for="nome">Nome da Conta</label>
+                    <input type="text" id="nome" name="nome_conta" maxlength="20" required>
+
+                    <label for="saldo_inicial">Saldo Inicial (R$)</label>
+                    <input type="number" id="saldo_inicial" name="saldo_inicial" step="0.01">
+
+                    <div class="btns">
+                        <button type="submit">Salvar</button>
+                        <a href="">Remover conta</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+<script src="{% static 'core/js/home.js' %}" defer></script>
+
+</html>
