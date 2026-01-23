@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/dados.css'%}">
+    <title>Document</title>
+</head>
+<body>
+
+    <header class="menu">
+
+        <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="dados/">Dados</a></li>
+        </ul>
+
+    </header>
+
+    <p>{{ total_receitas }}</p>
+
+    <h1>dados aqui</h1>
+</body>
+</html>

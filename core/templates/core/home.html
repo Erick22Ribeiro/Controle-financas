@@ -15,57 +15,117 @@
 
         <ul>
             <li><a href="">Início</a></li>
-            <li><a href="">Dados</a></li>
+            <li><a href="dados/">Dados</a></li>
         </ul>
 
     </header>
 
     <section class="forms-section">
 
+        <div class="exb-tran">
+
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="tipo_form" value="deletar_tran">
+            {% if transacoes %}
+
+                {% for transacao in transacoes %}
+
+                    {% if transacao.categoria.tipo == 'receita' %}
+
+                        <div class="info-tran">
+                            <div class="info-tran-1">
+                                <input type="checkbox" name="ids_para_deletar_tran" value="{{ transacao.id }}" id="tran{{ transacao.id }}">
+                                <label for="tran{{ transacao.id }}">{{ transacao.descricao }}</label>                               
+                            </div>
+                            
+                             <p style="color: rgb(110, 219, 128);">+ R${{ transacao.valor }}</p>
+                        </div>
+
+                    {% else %}
+                        
+                        <div class="info-tran">
+                            <div class="info-tran-1">
+                                <input type="checkbox" name="ids_para_deletar_tran" value="{{ transacao.id }}" id="tran{{ transacao.id }}">
+                                <label for="tran{{ transacao.id }}">{{ transacao.descricao }}</label>
+                            </div>
+                                
+                            <p style="color: rgb(219, 110, 110);">- R${{ transacao.valor }}</p>
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                <div class="btns">
+                    <button type="submit">Descartar transação</button>
+                </div>
+
+            {% else %}
+
+                <h3>Sem transações</h3>
+
+            {% endif %}
+
+                
+
+            </form>
+
+        </div>
+
+
         <div class="formularios">
 
             <!-- ======================================
                     TRANSAÇÕES
         ====================================== -->
-            <form method="post" class="form-container">
-                {% csrf_token %}
-                <!-- input pra especificar -->
-                <input type="hidden" name="tipo_form" value="transacao">
 
-                <h2>Nova Transação</h2>
+            <div class="area-tran">
 
-                <label for="descricao">Descrição</label>
-                <input type="text" id="descricao" name="descricao_t" maxlength="100" required>
+                <form method="post" class="form-container">
+                    {% csrf_token %}
+                    <!-- input pra especificar -->
+                    <input type="hidden" name="tipo_form" value="transacao">
 
-                <label for="valor">Valor (R$)</label>
-                <input type="number" id="valor" name="valor" step="0.01" required>
+                    <h2>Nova Transação</h2>
 
-                <label for="data">Data</label>
-                <input type="date" id="data" name="data" required>
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao" name="descricao_t" maxlength="100" required>
 
-                <label for="categoria">Categoria</label>
-                <select id="categoria" name="categoria" required>
-                    <option value="">Selecione</option>
-                    {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}">
-                        {{ categoria.nome }} ({{ categoria.get_tipo_display }})
-                    </option>
-                    {% endfor %}
-                </select>
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number" id="valor" name="valor" step="0.01" required>
 
-                <label for="conta">Conta</label>
-                <select id="conta" name="nome_conta" required>
-                    <option value="">Selecione</option>
-                    {% for conta in contas %}
-                    <option value="{{ conta.id }}">{{ conta.nome }}</option>
-                    {% endfor %}
-                </select>
+                    <label for="data">Data</label>
+                    <input type="date" id="data" name="data" required>
 
-                <label for="observacoes">Observações</label>
-                <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Selecione</option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">
+                            {{ categoria.nome }} ({{ categoria.get_tipo_display }})
+                        </option>
+                        {% endfor %}
+                    </select>
 
-                <button type="submit">Salvar Transação</button>
-            </form>
+                    <label for="conta">Conta</label>
+                    <select id="conta" name="nome_conta" required>
+                        <option value="">Selecione</option>
+                        {% for conta in contas %}
+                        <option value="{{ conta.id }}">{{ conta.nome }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+
+                    <div class="btns">
+                        <button type="submit">Salvar Transação</button>
+                    </div>
+
+                </form>
+            </div>
+
 
             <div class="forms-direita">
 
@@ -97,13 +157,15 @@
 
                         <div class="btns">
                             <button type="submit">Salvar</button>
-                            <button type="button" onclick="abrirModal()">Excluir categoria</button>
+                            <button type="button" onclick="abrirModal()">Remover categoria</button>
                         </div>
 
                     </form>
 
+                    {% if categorias %}
+
                     <div class="caixa-excluir">
-                        <h3>Selecione as categorias para excluir</h3>
+                        <h3>Selecione categorias para excluir</h3>
 
                         <form method="post" action="">
                             {% csrf_token %}
@@ -112,7 +174,8 @@
                             {% for categoria in categorias %}
                             <div class="opcs-categorias">
                                 <label for="cat{{ categoria.id }}">{{ categoria.nome }}</label>
-                                <input type="checkbox" name="ids_para_deletar" value="{{ categoria.id }}" id="cat{{ categoria.id }}">
+                                <input type="checkbox" name="ids_para_deletar" value="{{ categoria.id }}"
+                                    id="cat{{ categoria.id }}">
                             </div>
                             {% endfor %}
 
@@ -124,6 +187,16 @@
                         </form>
                     </div>
 
+                    {% else %}
+
+                    <div class="caixa-excluir">
+                        <h3>Não há categorias para excluir</h3>
+
+                        <button type="button" onclick="fecharModal()">Voltar</button>
+                    </div>
+
+                    {% endif %}
+
                 </div>
 
 
@@ -132,27 +205,71 @@
                 <!-- ======================================
                             CONTAS
                  ====================================== -->
-                <form method="post" class="form-container">
-                    {% csrf_token %}
-                    <!-- input pra especificar -->
-                    <input type="hidden" name="tipo_form" value="contas">
+                <div class="caixa-conta">
 
-                    <h2>Nova Conta</h2>
+                    <form method="post" class="form-container">
+                        {% csrf_token %}
+                        <!-- input pra especificar -->
+                        <input type="hidden" name="tipo_form" value="contas">
 
-                    <label for="nome">Nome da Conta</label>
-                    <input type="text" id="nome" name="nome_conta" maxlength="20" required>
+                        <h2>Nova Conta</h2>
 
-                    <label for="saldo_inicial">Saldo Inicial (R$)</label>
-                    <input type="number" id="saldo_inicial" name="saldo_inicial" step="0.01">
+                        <label for="nome">Nome da Conta</label>
+                        <input type="text" id="nome" name="nome_conta" maxlength="20" required>
 
-                    <div class="btns">
-                        <button type="submit">Salvar</button>
-                        <a href="">Remover conta</a>
+                        <label for="saldo_inicial">Saldo Inicial (R$)</label>
+                        <input type="number" id="saldo_inicial" name="saldo_inicial" step="0.01">
+
+                        <div class="btns">
+                            <button type="submit">Salvar</button>
+                            <button type="button" onclick="abrirModalConta()">Remover conta</button>
+
+                        </div>
+
+                    </form>
+
+                    {% if contas %}
+
+                    <div class="caixa-excluir-conta">
+                        <h3>Selecione contas para excluir</h3>
+
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="tipo_form" value="deletar_contas">
+
+                            {% for conta in contas %}
+                            <div class="opcs-contas">
+                                <label for="cont{{ conta.id }}">{{ conta.nome }}</label>
+                                <input type="checkbox" name="ids_para_deletar_conta" value="{{ conta.id }}"
+                                    id="cont{{ categoria.id }}">
+                            </div>
+                            {% endfor %}
+
+                            <div class="btns-excluir">
+                                <button type="button" onclick="fecharModalConta()">Cancelar</button>
+                                <button type="submit">Deletar Selecionados</button>
+                            </div>
+
+                        </form>
+
                     </div>
 
-                </form>
+                    {% else %}
+
+                    <div class="caixa-excluir-conta">
+                        <h3>Não há contas para excluir</h3>
+                        <button type="button" onclick="fecharModalConta()">Voltar</button>
+                    </div>
+
+                    {% endif %}
+
+                </div>
 
             </div>
+
+        </div>
+
+        <div class="vazia">
 
         </div>
 

@@ -41,4 +41,4 @@ class Transacao(models.Model):
     
     class Meta:
         verbose_name_plural = 'Transações'
-        ordering = ['-data', '-criado_em']
+        ordering = ['-criado_em']
