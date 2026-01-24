@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from core.models import Transacao, Categoria, Conta
 import sqlite3
 
+import pandas as pd #analise
+import plotly.express as px #exibição
+from plotly.offline import plot
+from django.http import HttpResponse
+
 # Create your views here.
 def financas(request):
 
@@ -102,8 +107,7 @@ def financas(request):
 
     return render(request, 'core/home.html', context)
 
-import pandas as pd
-from django.http import HttpResponse
+
 
 def dados(request):
 
@@ -113,8 +117,9 @@ def dados(request):
         'categoria__nome', 'categoria__tipo', 'conta__nome'
     )
     
-    #Tratamento
-    # Converter para DataFrame
+    #Tratamento ====================================
+
+        # Converter para DataFrame
     df = pd.DataFrame(list(transacoes))
 
     df.rename(columns={
@@ -123,13 +128,74 @@ def dados(request):
         'conta__nome': 'conta'
         }, inplace=True) #inplace=True precisa pra aparecer
     
+        #Converter pra datetime
+    df['data'] = pd.to_datetime(df['data'])
 
-    #Análise
+    #print(df)
+    
+    #Análise =======================================
+
+    #Total receita e despesa
     total_receitas = df[df['tipo'] == 'receita']['valor'].sum()
+    total_despesas = df[df['tipo'] == 'despesa']['valor'].sum()
+
+    #Receita x despesa / g_1
+
+        
+    df['mes'] = df['data'].dt.to_period('M').astype(str) #Criação da coluna mes
+
+        
+    resumo_mensal = (
+        df.groupby(['mes', 'tipo'])['valor'] #Agrupar por mes e tipo
+        .sum()
+        .reset_index() #precisa
+    )
+
+    print(resumo_mensal)
+
+
+    #Despesas por categoria / g_2
+    despesas = df[df['tipo'] == 'despesa']
+    gastos_categoria = despesas.groupby('categoria')['valor'].sum().reset_index()
+
+
+
+    #Exibição
+    """ 
+    ✔ Receitas x Despesas (mensal)
+    ✔ Despesas por categoria (donut)
+    ✔ Evolução de despesas no tempo
+    ✔ Saldo mensal
+    ✔ Top categorias mais caras 
+    """
+
+    #Gráfico Receita X despesa / g_1
+    g_1 = px.bar(
+        resumo_mensal,
+        x = 'mes', y = 'valor',
+        color = 'tipo',
+        title = 'Receitas X Despesas por mês'
+    )
+
+    #Gráfico Despesas por categoria / g_2
+    g_2 = px.pie(
+        gastos_categoria,
+        values = 'valor',
+        names = 'categoria',
+        title = 'Despesas por Categoria',
+        hole = 0.3  # Donut chart
+    )
+
+    
+    g_1_html = plot(g_1, output_type='div', include_plotlyjs='cdn')
+    g_2_html = plot(g_2, output_type='div', include_plotlyjs='cdn')
 
     context = {
         'total_receitas': total_receitas,
+        'total_despesas': total_despesas,
+        'g_1': g_1_html,
+        'g_2': g_2_html,
     }
-    
+
     return render(request, 'core/dados.html', context)
 

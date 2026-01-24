@@ -19,8 +19,32 @@
 
     </header>
 
-    <p>{{ total_receitas }}</p>
 
-    <h1>dados aqui</h1>
+    <div class="topo">
+        <div class="t-receitas">
+            <h3>Total de receitas</h3>
+            R${{ total_receitas }}
+        </div>
+        <div class="t-despesas">
+            <h3>Total de despesas</h3>
+            R${{ total_despesas }}
+        </div>
+    </div>
+
+    <div class="graficos-topo">
+
+        <div class="g_1">
+            {{ g_1|safe }}
+        </div>
+
+        <div class="g_2">
+            {{ g_2|safe }}
+        </div>
+
+    </div>
+    
+    
+
+
 </body>
 </html>
