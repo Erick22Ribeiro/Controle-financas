@@ -140,8 +140,6 @@ def dados(request):
     total_despesas = df[df['tipo'] == 'despesa']['valor'].sum()
 
     #Receita x despesa / g_1
-
-        
     df['mes'] = df['data'].dt.to_period('M').astype(str) #Criação da coluna mes
 
         
@@ -151,13 +149,15 @@ def dados(request):
         .reset_index() #precisa
     )
 
-    print(resumo_mensal)
-
 
     #Despesas por categoria / g_2
     despesas = df[df['tipo'] == 'despesa']
     gastos_categoria = despesas.groupby('categoria')['valor'].sum().reset_index()
 
+
+    #Categorias mais caras / g_3
+    receitas = df[df['tipo'] == 'receita']
+    ganhos_categoria = receitas.groupby('categoria')['valor'].sum().reset_index()
 
 
     #Exibição
@@ -186,15 +186,26 @@ def dados(request):
         hole = 0.3  # Donut chart
     )
 
-    
+    #Gráfico Gnahos por categoria / g_3
+    g_3 = px.pie(
+        ganhos_categoria,
+        values = 'valor',
+        names = 'categoria',
+        title = 'Receita por categoria',
+        hole = 0.3
+    )
+
+
     g_1_html = plot(g_1, output_type='div', include_plotlyjs='cdn')
     g_2_html = plot(g_2, output_type='div', include_plotlyjs='cdn')
+    g_3_html = plot(g_3, output_type='div', include_plotlyjs='cdn')
 
     context = {
         'total_receitas': total_receitas,
         'total_despesas': total_despesas,
         'g_1': g_1_html,
         'g_2': g_2_html,
+        'g_3': g_3_html
     }
 
     return render(request, 'core/dados.html', context)
