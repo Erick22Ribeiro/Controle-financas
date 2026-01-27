@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Transacao, Categoria, Conta
 import sqlite3
+from datetime import date
+from django.db.models import Sum
 
 import pandas as pd #analise
 import plotly.express as px #exibição
@@ -66,6 +68,22 @@ def financas(request):
 
             return redirect('home')
         
+        #Editar categoria
+        elif tipo_form == 'editar_categoria':
+
+            categoria_id = request.POST.get('categoria_id')
+            novo_nome = request.POST.get('novo_nome')
+            novo_tipo = request.POST.get('novo_tipo')
+
+
+            categoria = get_object_or_404(Categoria, id=categoria_id) #Pega a categoria da classe categoria cujo id é igual ao passado (categoria_id)
+
+            categoria.nome = novo_nome
+            categoria.tipo = novo_tipo
+            categoria.save()
+
+            return redirect('home')
+
 
         #Excluir categoria
         elif tipo_form == 'deletar_categorias':
@@ -75,7 +93,22 @@ def financas(request):
             Categoria.objects.filter(id__in=ids).delete() 
 
             return redirect('home')
+        
 
+        #Editar conta
+        elif tipo_form == 'editar_conta':
+
+            conta_id = request.POST.get('conta_id')
+            novo_nome = request.POST.get('novo_nome_conta')
+            novo_saldo_i = request.POST.get('novo_saldo_i')
+
+            conta = get_object_or_404(Conta, id = conta_id)
+
+            conta.nome = novo_nome
+            conta.saldo_inicial = novo_saldo_i
+            conta.save()
+
+            return redirect('home')
 
         #Excluir conta
         elif tipo_form == 'deletar_contas':
@@ -86,6 +119,7 @@ def financas(request):
 
             return redirect('home')
         
+        #Deletar Transação
         elif tipo_form == 'deletar_tran':
 
             ids = request.POST.getlist('ids_para_deletar_tran')
@@ -130,32 +164,98 @@ def dados(request):
     
         #Converter pra datetime
     df['data'] = pd.to_datetime(df['data'])
-
-    #print(df)
     
     #Análise =======================================
 
-    #Total receita e despesa
-    total_receitas = df[df['tipo'] == 'receita']['valor'].sum()
-    total_despesas = df[df['tipo'] == 'despesa']['valor'].sum()
+    #Total receita e despesa por mes
+    MESES = [
+    (1, 'Janeiro'),
+    (2, 'Fevereiro'),
+    (3, 'Março'),
+    (4, 'Abril'),
+    (5, 'Maio'),
+    (6, 'Junho'),
+    (7, 'Julho'),
+    (8, 'Agosto'),
+    (9, 'Setembro'),
+    (10, 'Outubro'),
+    (11, 'Novembro'),
+    (12, 'Dezembro'),
+    ]
 
-    #Receita x despesa / g_1
-    df['mes'] = df['data'].dt.to_period('M').astype(str) #Criação da coluna mes
+    hoje = date.today()
 
-        
+    #Pegar mes selecionado pela url
+    mes_selecionado = request.GET.get('mes')
+
+    if mes_selecionado:
+        mes_selecionado = int(mes_selecionado)
+    else:
+        mes_selecionado = hoje.month
+
+    ano_atual = hoje.year
+
+    #Pega receita por mes
+    receita_mes = Transacao.objects.filter(
+        categoria__tipo = 'receita',
+        data__month = mes_selecionado,
+        data__year = ano_atual,
+    ).aggregate(total = Sum('valor'))['total'] or 0 
+
+    #pega despesa por mes
+    despesa_mes = Transacao.objects.filter(
+        categoria__tipo = 'despesa',
+        data__month = mes_selecionado,
+        data__year = ano_atual,
+    ).aggregate(total = Sum('valor'))['total'] or 0
+
+    #Receita x despesa / g_1 ============
+    df['ano'] = df['data'].dt.year
+    df['mes_num'] = df['data'].dt.month
+    df['mes_nome'] = df['data'].dt.month_name(locale='pt_BR')
+
+
+    #Agrupa por mes e tipo
     resumo_mensal = (
-        df.groupby(['mes', 'tipo'])['valor'] #Agrupar por mes e tipo
+        df.groupby(['ano', 'mes_num', 'mes_nome', 'tipo'])['valor']
         .sum()
         .reset_index() #precisa
     )
 
+    #Mes com maior receita
+        #Pega só as receitas
+    receitas_mensais = resumo_mensal[resumo_mensal['tipo'] == 'receita']
 
-    #Despesas por categoria / g_2
+    if not receitas_mensais.empty:
+        linha = receitas_mensais.loc[receitas_mensais['valor'].idxmax()]
+        mes_maior_receita = f"{linha['mes_nome']} de {linha['ano']}"
+        valor_maior_receita = linha['valor']
+    else:
+        mes_maior_receita = None
+        valor_maior_receita = 0
+
+
+
+    #Mes com maior despesa
+        #pega só as despesas
+    despesas_mensais = resumo_mensal[resumo_mensal['tipo'] == 'despesa']
+
+    if not despesas_mensais.empty:
+        linha = despesas_mensais.loc[despesas_mensais['valor'].idxmax()]
+        mes_maior_despesa = f"{linha['mes_nome']} de {linha['ano']}"
+        valor_maior_despesa = linha['valor']
+    else:
+        mes_maior_despesa = None
+        valor_maior_despesa = 0
+
+
+
+    #Despesas por categoria / g_2 ============
     despesas = df[df['tipo'] == 'despesa']
     gastos_categoria = despesas.groupby('categoria')['valor'].sum().reset_index()
 
 
-    #Categorias mais caras / g_3
+    #Categorias mais caras / g_3 ==============
     receitas = df[df['tipo'] == 'receita']
     ganhos_categoria = receitas.groupby('categoria')['valor'].sum().reset_index()
 
@@ -172,7 +272,7 @@ def dados(request):
     #Gráfico Receita X despesa / g_1
     g_1 = px.bar(
         resumo_mensal,
-        x = 'mes', y = 'valor',
+        x = 'mes_nome', y = 'valor',
         color = 'tipo',
         title = 'Receitas X Despesas por mês'
     )
@@ -186,7 +286,7 @@ def dados(request):
         hole = 0.3  # Donut chart
     )
 
-    #Gráfico Gnahos por categoria / g_3
+    #Gráfico Ganhos por categoria / g_3
     g_3 = px.pie(
         ganhos_categoria,
         values = 'valor',
@@ -201,12 +301,19 @@ def dados(request):
     g_3_html = plot(g_3, output_type='div', include_plotlyjs='cdn')
 
     context = {
-        'total_receitas': total_receitas,
-        'total_despesas': total_despesas,
+        'meses': MESES,
+        'mes_selecionado': mes_selecionado,
+        'receita_mes': receita_mes,
+        'despesa_mes': despesa_mes,
+        'mes_maior_receita': mes_maior_receita,
+        'valor_maior_receita': valor_maior_receita,
+        'mes_maior_despesa': mes_maior_despesa,
+        'valor_maior_despesa': valor_maior_despesa,
         'g_1': g_1_html,
         'g_2': g_2_html,
-        'g_3': g_3_html
+        'g_3': g_3_html,
     }
+
 
     return render(request, 'core/dados.html', context)
 

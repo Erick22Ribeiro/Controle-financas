@@ -38,12 +38,56 @@ header{
 /* ======================================
                  TOPO
 ======================================  */
+.select-mes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+}
+
+.select-mes label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.select-mes select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    padding: 8px 36px 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.5 7l4.5 4.5L14.5 7z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.select-mes select:hover {
+    border-color: #b5b8bd;
+}
+
+.select-mes select:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 .topo{
+    padding: 20px 0;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 30px;
-
 }
 .t-receitas{
     display: flex;
@@ -54,17 +98,53 @@ header{
     height: 150px;
     border-bottom: 2px solid green;
     padding: 20px 5px;
+
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .t-despesas{
+    padding: 20px 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     width: 200px;
     height: 150px;
-    border-bottom: 2px solid rgb(185, 0, 0)
+    border-bottom: 2px solid rgb(185, 0, 0);
+
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.info-1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.mes-receita{
+    border-bottom: green;
+    padding: 5px 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.mes-despesa{
+    border-bottom: rgb(185, 0, 0);
+    padding: 5px 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.centrais{
+    display: flex;
+    gap: 20px;
+}
 /* ======================================
                 GRAFICOS
 ======================================  */

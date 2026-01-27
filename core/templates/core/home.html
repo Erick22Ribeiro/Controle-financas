@@ -63,7 +63,7 @@
                 {% endfor %}
 
                 <div class="btns">
-                    <button type="submit">Editar</button>
+                    <button type="submit">Deletar</button>
                 </div>
 
                 {% else %}
@@ -169,6 +169,21 @@
 
                     <!-- DIV OPÇÕES -->
                     <div class="caixa-opcoes">
+
+                        <h3>Categorias</h3>
+
+                        {% for categoria in categorias %}
+                        <div class="opcs-categorias">
+
+                            <!-- VISUAL -->
+                            <div>
+                                <span>{{ categoria.nome }} ({{ categoria.tipo }})</span>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+
                         <div class="btns-opcoes">
                             <button class="btn-editar" type="button" onclick="abrirModalEditar()">Editar</button>
                             <button class="btn-excluir" type="button" onclick="abrirModalExcluir()">Excluir</button>
@@ -188,7 +203,7 @@
                             <div class="view-mode">
                                 <span>{{ categoria.nome }} ({{ categoria.tipo }})</span>
 
-                                <span class="icone editar" onclick="editarCategoria('{{ categoria.id }}')">
+                                <span class="icone-editar" onclick="editarCategoria('{{ categoria.id }}')">
                                     <i class="bi bi-pencil"></i>
                                 </span>
                             </div>
@@ -221,6 +236,11 @@
 
                         </div>
                         {% endfor %}
+
+                        <div class="btns-opcoes">
+                            <button type="button" onclick="fecharEdit()">Cancelar</button>
+                        </div>
+
                     </div>
 
 
@@ -233,11 +253,12 @@
 
                     {% endif %}
 
+                    <!-- DIV EXCLUIR -->
                     {% if categorias %}
-
                     <div class="caixa-excluir">
                         <h3>Selecione para excluir</h3>
 
+                        <!-- FORM de exclusão -->
                         <form method="post" action="">
                             {% csrf_token %}
                             <input type="hidden" name="tipo_form" value="deletar_categorias">
@@ -303,16 +324,96 @@
 
                         <div class="btns">
                             <button type="submit">Salvar</button>
-                            <button type="button" onclick="abrirModalConta()">Remover conta</button>
+                            <button type="button" onclick="abrirModalOpcsConta()">Opções</button>
 
                         </div>
 
                     </form>
 
-                    {% if contas %}
+                    <!-- DIV OPCOES -->
+                    <div class="caixa-opcoes-conta">
 
+                        <h3>Contas</h3>
+
+                        {% for conta in contas %}
+                        <div class="opcs-contas">
+
+                            <!-- VISUAL -->
+                            <div>
+                                <span>{{ conta.nome }} R$({{ conta.saldo_inicial }})</span>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+
+                        <div class="btns-opcoes">
+                            <button class="btn-editar" type="button" onclick="abrirModalEditarConta()">Editar</button>
+                            <button class="btn-excluir" type="button" onclick="abrirModalExcluirConta()">Excluir</button>
+                            <button class="btn-voltar" type="button" onclick="fecharOpcsConta()">Voltar</button>
+                        </div>
+
+                    </div>
+
+                    <!-- EDITAR CONTA -->
+                    {% if contas %}
+                    <div class="caixa-editar-conta">
+                        <h3>Selecione para edição</h3>
+
+                        {% for conta in contas %}
+                        <div class="opcs-contas" id="cont-{{ conta.id }}">
+
+                            <!-- VISUAL -->
+                            <div class="view-mode">
+                                <span>{{ conta.nome }} R$({{ conta.saldo_inicial }})</span>
+
+                                <span class="icone-editar" onclick="editarConta('{{ conta.id }}')">
+                                    <i class="bi bi-pencil"></i>
+                                </span>
+                            </div>
+
+                            <!-- FORM DE EDIÇÃO -->
+                            <form method="post" class="edit-mode" style="display:none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="tipo_form" value="editar_conta">
+                                <input type="hidden" name="conta_id" value="{{ conta.id }}">
+
+                                <input type="text" name="novo_nome_conta" value="{{ conta.nome }}" required>
+
+                                <input type="number" name="novo_saldo_i" value="{{ conta.saldo_inicial }}">
+
+                                <div class="btns-edit">
+                                    <button type="submit">Salvar</button>
+                                    <button type="button" onclick="cancelarEditConta('{{ conta.id }}')">
+                                    Cancelar
+                                    </button>
+                                </div>
+                                
+                            </form>
+
+                        </div>
+                        {% endfor %}
+
+                        <div class="btns-opcoes">
+                            <button type="button" onclick="fecharEditConta()">Cancelar</button>
+                        </div>
+
+                    </div>
+
+
+                    {% else %}
+                    <div class="caixa-editar">
+                        <h3>Não há contas para editar</h3>
+
+                        <button class="btn-editar-cancelar" type="button" onclick="fecharExcluirConta()">Cancelar</button>
+                    </div>
+
+                    {% endif %}
+
+                    <!-- Div Excluir conta -->
+                    {% if contas %}
                     <div class="caixa-excluir-conta">
-                        <h3>Selecione contas para excluir</h3>
+                        <h3>Selecione para excluir</h3>
 
                         <form method="post" action="">
                             {% csrf_token %}
@@ -327,8 +428,8 @@
                             {% endfor %}
 
                             <div class="btns-excluir">
-                                <button type="button" onclick="fecharModalConta()">Cancelar</button>
-                                <button type="submit">Deletar Selecionados</button>
+                                <button type="submit">Deletar</button>
+                                <button type="button" onclick="fecharExcluirConta()">Cancelar</button>                              
                             </div>
 
                         </form>

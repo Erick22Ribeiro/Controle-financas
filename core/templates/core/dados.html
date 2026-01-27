@@ -2,12 +2,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/css/dados.css'%}">
     <title>Document</title>
 </head>
+
 <body>
 
     <header class="menu">
@@ -21,14 +23,42 @@
 
 
     <div class="topo">
-        <div class="t-receitas">
+
+        <form class="select-mes" method="get">
+            <label for="mes">Mês</label>
+
+            <select name="mes" id="mes" onchange="this.form.submit()">
+                {% for numero, nome in meses %}
+                <option value="{{ numero }}" {% if numero == mes_selecionado %}selected{% endif %}>
+                    {{ nome }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <div class="centrais">
+            <div class="t-receitas">
             <h3>Receita total</h3>
-            R${{ total_receitas }}
+            <p>R$ {{ receita_mes }}</p>
         </div>
+
         <div class="t-despesas">
             <h3>Despesa total</h3>
-            R${{ total_despesas }}
+            <p>R$ {{ despesa_mes }}</p>
         </div>
+        </div>
+        
+
+        <div class="info-1">
+            <div class="mes-receita">
+                <p>Mês mais lucrativo: <strong>{{ mes_maior_receita }} - R${{ valor_maior_receita }}</strong></p>
+            </div>
+            <div class="mes-despesa">
+                <p>Mês de maior despesa: <strong>{{ mes_maior_despesa }} - R${{ valor_maior_despesa }}</strong></p>
+            </div>
+        </div>
+        
+
     </div>
 
     <div class="graficos-topo">
@@ -46,9 +76,10 @@
         </div>
 
     </div>
-    
-    
+
+
 
 
 </body>
+
 </html>
