@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-    <title>Document</title>
+    <title>Controle Financeiro</title>
 </head>
 
 <body>
@@ -87,11 +87,20 @@
         ====================================== -->
 
             <div class="area-tran">
-
+                
                 <form method="post" class="form-container">
                     {% csrf_token %}
                     <!-- input pra especificar -->
                     <input type="hidden" name="tipo_form" value="transacao">
+
+                    <div class="btn-info-tran">
+                        <i class="bi bi-info-circle" onclick="exibirInfoTran(event)"></i>
+                    </div>
+
+                    <div class="caixa-info-tran">
+                        <p>Aqui você cadastra transações, de quaquer tipo, uma compra online ou pequena receita, tudo o que você considera relevante para monitorar seu financeiro.</p>
+                    </div>
+                    
 
                     <h2>Nova Transação</h2>
 
@@ -132,7 +141,6 @@
                 </form>
             </div>
 
-
             <div class="forms-direita">
 
                 <!-- ======================================
@@ -145,6 +153,16 @@
                         {% csrf_token %}
                         <!-- input pra especificar -->
                         <input type="hidden" name="tipo_form" value="categoria">
+
+                        <div class="btn-info-cate">
+                            <i class="bi bi-info-circle" onclick="exibirInfoCate(event)"></i>
+                        </div>
+
+                        <div class="caixa-info-cate">
+                            <p>Aqui você pode inserir categorias para tipos de desepesas e receitas</p>
+
+                            <p>Exemplo: Gastos médicos, tipo: despesa</p>
+                        </div>
 
                         <h2>Nova Categoria</h2>
 
@@ -308,7 +326,6 @@
 
                 </div>
 
-
                 <!-- ======================================
                             CONTAS
                  ====================================== -->
@@ -318,6 +335,14 @@
                         {% csrf_token %}
                         <!-- input pra especificar -->
                         <input type="hidden" name="tipo_form" value="contas">
+
+                        <div class="btn-info-cont">
+                            <i class="bi bi-info-circle" onclick="exibirInfoCont(event)"></i>
+                        </div>
+
+                        <div class="caixa-info-cont">
+                            <p>Aqui você pode inserir contas bancarias de onde você movimenta seu dinheiro, ou se preferir, adicionar uma conta ilustrativa para movimentações gerais.</p>
+                        </div>
 
                         <h2>Nova Conta</h2>
 

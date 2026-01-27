@@ -1,6 +1,6 @@
 /* ======================================
                 GERAL
-======================================  */
+====================================== */
 * {
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
@@ -13,32 +13,41 @@ body {
 
 /* ======================================
                 MENU
-======================================  */
-
-header{
+====================================== */
+header {
     border-bottom: 1px solid black;
 }
 
-.menu{
+.menu {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-.menu ul{
-    padding: 0 0;
-    list-style-type: none;
+.menu ul {
+    list-style: none;
+    padding: 0;
     display: flex;
     gap: 20px;
 }
-.menu ul li a{
+
+.menu ul li a {
     text-decoration: none;
     color: black;
+    font-size: 18px;
 }
 
 /* ======================================
                  TOPO
-======================================  */
+====================================== */
+.topo {
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
 .select-mes {
     display: flex;
     align-items: center;
@@ -56,20 +65,16 @@ header{
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-
     background: #fff;
     border: none;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
     padding: 8px 36px 8px 12px;
     font-size: 14px;
     font-weight: 500;
     color: #333;
-
     cursor: pointer;
     transition: all 0.2s ease;
-
     background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.5 7l4.5 4.5L14.5 7z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -84,15 +89,12 @@ header{
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.topo{
-    padding: 20px 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-}
-
-.saldo-mes{
+/* ======================================
+              INFORMAÇÕES DO TOPO
+====================================== */
+.saldo-mes,
+.t-receitas,
+.t-despesas {
     padding: 20px 5px;
     display: flex;
     flex-direction: column;
@@ -100,42 +102,24 @@ header{
     align-items: center;
     width: 200px;
     height: 150px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.saldo-mes {
     border-bottom: 2px solid rgb(66, 66, 66);
-
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.t-receitas{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 200px;
-    height: 150px;
+
+.t-receitas {
     border-bottom: 2px solid green;
-    padding: 20px 5px;
-
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.t-despesas{
-    padding: 20px 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 200px;
-    height: 150px;
+
+.t-despesas {
     border-bottom: 2px solid rgb(185, 0, 0);
-
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.info-1{
+.info-1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -143,74 +127,67 @@ header{
     gap: 10px;
 }
 
-.mes-receita{
+.mes-receita,
+.mes-despesa {
     height: 70px;
     width: 270px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: green;
-    padding: 5px 10px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.mes-despesa{
-    height: 70px;
-    width: 270px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-bottom: rgb(185, 0, 0);
     padding: 5px 10px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.mes-despesa p, .mes-receita p{
+.mes-receita {
+    border-bottom: green;
+}
+
+.mes-despesa {
+    border-bottom: rgb(185, 0, 0);
+}
+
+.mes-receita p,
+.mes-despesa p {
     margin: 5px 0;
 }
 
-.centrais{
+.centrais {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
+
 /* ======================================
-                GRAFICOS
-======================================  */
-.graficos-topo{
-    justify-content: center;
+                GRÁFICOS
+====================================== */
+.graficos-topo {
     display: flex;
+    justify-content: center;
     margin-top: 30px;
     width: 100%;
     gap: 20px;
 }
 
-.g_1{
+.g_1,
+.g_2,
+.g_3 {
     width: 450px;
     max-height: 450px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.g_1 {
     border-top: 2px solid rgb(66, 66, 66);
-
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.g_2{
-    width: 450px;
-    max-height: 450px;
+
+.g_2 {
     border-top: 2px solid rgb(185, 0, 0);
-
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.g_3{
-    width: 450px;
-    max-height: 450px;
-    border-top: 2px solid green;
 
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.g_3 {
+    border-top: 2px solid green;
 }

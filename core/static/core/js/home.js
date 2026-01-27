@@ -127,26 +127,38 @@ function cancelarEditConta(id) {
     container.querySelector('.view-mode').style.display = 'flex';
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function abrirModalConta() {
-   
-}
-
 function fecharModalConta() {
     document.querySelector('.caixa-excluir-conta').style.display = 'none';
 }
+
+/* Btn info */
+function exibirInfoTran(e) {
+    e.stopPropagation(); // impede fechar ao abrir
+    document.querySelector('.caixa-info-tran').style.display = 'block';
+}
+function exibirInfoCate(e) {
+    e.stopPropagation(); // impede fechar ao abrir
+    document.querySelector('.caixa-info-cate').style.display = 'block';
+}
+function exibirInfoCont(e) {
+    e.stopPropagation(); // impede fechar ao abrir
+    document.querySelector('.caixa-info-cont').style.display = 'block';
+}
+
+document.addEventListener('click', function (e) {
+    const caixaTran = document.querySelector('.caixa-info-tran');
+    const caixaCate = document.querySelector('.caixa-info-cate');
+    const caixaCont = document.querySelector('.caixa-info-cont');
+
+    // se a caixa estiver aberta e o clique for fora dela
+    if (caixaTran.style.display === 'block' && !caixaTran.contains(e.target)) {
+        caixaTran.style.display = 'none';
+    }
+
+    if (caixaCate.style.display === 'block' && !caixaCate.contains(e.target)) {
+        caixaCate.style.display = 'none';
+    }
+    if (caixaCont.style.display === 'block' && !caixaCont.contains(e.target)) {
+        caixaCont.style.display = 'none';
+    }
+});
