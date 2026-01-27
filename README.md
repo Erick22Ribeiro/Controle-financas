@@ -55,7 +55,26 @@ Além das operações de CRUD, o sistema possui uma **camada analítica**, onde 
 
 ## ⚙️ Como executar o projeto localmente
 
-### 1️⃣ Clonar o repositório
-```bash
-git clone https://github.com/Erick22Ribeiro/Controle-financas.git
-cd Controle-financas
+### 1️⃣ Crie uma pasta no seu computador
+
+### 2 Abra a pasta no seu editor de código
+
+### 2 Clone o repositório do projeto
+No terminal: git clone https://github.com/Erick22Ribeiro/Controle-financas.git
+
+### 3 Entre na pasta do projeto
+No terminal: cd Controle-financas
+
+### 4 Crie o ambiente virtual para baixar as ferramentas necessárias
+
+No terminal: python -m venv env
+
+### 5 Ative o hambiente virtual
+No terminal: env\Scripts\activate
+
+### Baixe as dependencias
+No terminal: pip install -r requirements.txt
+
+
+
+
