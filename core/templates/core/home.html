@@ -41,6 +41,7 @@
                         <input type="checkbox" name="ids_para_deletar_tran" value="{{ transacao.id }}"
                             id="tran{{ transacao.id }}">
                         <label for="tran{{ transacao.id }}">{{ transacao.descricao }}</label>
+                        <p>{{ transacao.data.mes }}</p>
                     </div>
 
                     <p style="color: green">+ R${{ transacao.valor }}</p>
@@ -248,7 +249,10 @@
                     <div class="caixa-editar">
                         <h3>Não há categorias para editar</h3>
 
-                        <button class="btn-editar-cancelar" type="button" onclick="fecharExcluir()">Cancelar</button>
+                        <div class="btns-opcoes">
+                            <button class="btn-editar-cancelar" type="button" onclick="fecharEdit()">Voltar</button>
+                        </div>
+                        
                     </div>
 
                     {% endif %}
@@ -294,14 +298,15 @@
                     <div class="caixa-excluir">
                         <h3>Não há categorias para excluir</h3>
 
-                        <button class="btn-excluir-cancelar" type="button" onclick="fecharExcluir()">Cancelar</button>
+                        <div class="btns-opcoes">
+                            <button class="btn-excluir-cancelar" type="button" onclick="fecharExcluir()">Voltar</button>
+                        </div>
+                        
                     </div>
 
                     {% endif %}
 
                 </div>
-
-
 
 
                 <!-- ======================================
@@ -402,10 +407,13 @@
 
 
                     {% else %}
-                    <div class="caixa-editar">
+                    <div class="caixa-editar-conta">
                         <h3>Não há contas para editar</h3>
 
-                        <button class="btn-editar-cancelar" type="button" onclick="fecharExcluirConta()">Cancelar</button>
+                        <div class="btns-opcoes">
+                            <button class="btn-editar-cancelar" type="button" onclick="fecharEditConta()">Voltar</button>
+                        </div>
+                        
                     </div>
 
                     {% endif %}
@@ -429,7 +437,7 @@
 
                             <div class="btns-excluir">
                                 <button type="submit">Deletar</button>
-                                <button type="button" onclick="fecharExcluirConta()">Cancelar</button>                              
+                                <button type="button" onclick="fecharExcluirConta()">Voltar</button>                              
                             </div>
 
                         </form>
@@ -440,7 +448,7 @@
 
                     <div class="caixa-excluir-conta">
                         <h3>Não há contas para excluir</h3>
-                        <button type="button" onclick="fecharModalConta()">Voltar</button>
+                        <button type="button" onclick="fecharExcluirConta()">Voltar</button>
                     </div>
 
                     {% endif %}
