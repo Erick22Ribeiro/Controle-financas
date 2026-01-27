@@ -57,24 +57,35 @@ Além das operações de CRUD, o sistema possui uma **camada analítica**, onde 
 
 ### 1️⃣ Crie uma pasta no seu computador
 
-### 2 Abra a pasta no seu editor de código
+### 2️⃣ Abra a pasta no seu editor de código
 
-### 2 Clone o repositório do projeto
-No terminal: git clone https://github.com/Erick22Ribeiro/Controle-financas.git
+### 3️⃣ Clone o repositório
+No terminal:
+git clone https://github.com/Erick22Ribeiro/Controle-financas.git
 
-### 3 Entre na pasta do projeto
-No terminal: cd Controle-financas
+### 4️⃣ Acesse a pasta do projeto
+No terminal:
+cd Controle-financas
 
-### 4 Crie o ambiente virtual para baixar as ferramentas necessárias
+### 5️⃣ Crie o ambiente virtual
+No terminal:
+python -m venv env
 
-No terminal: python -m venv env
+### 6️⃣ Ative o ambiente virtual
+No terminal (Windows):
+env\Scripts\activate
 
-### 5 Ative o hambiente virtual
-No terminal: env\Scripts\activate
+### 7️⃣ Instale as dependências
+No terminal:
+pip install -r requirements.txt
 
-### Baixe as dependencias
-No terminal: pip install -r requirements.txt
+### 8️⃣ Aplique as migrações do banco de dados
+No terminal:
+python manage.py migrate
 
+### 9️⃣ Execute o servidor
+No terminal:
+python manage.py runserver
 
 
 
