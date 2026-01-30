@@ -6,20 +6,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'core/css/dados.css'%}">
+    <link rel="stylesheet" href="{% static 'analytics/css/dados.css'%}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>Document</title>
+    <title>Dados</title>
 </head>
 
 <body>
 
-    <header class="menu">
+    <header class="header">
+        <div class="container-header">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <span class="logo-text">Financie.me</span>
+            </div>
 
-        <ul>
-            <li><a href="/">Início</a></li>
-            <li><a href="/dados/">Dados</a></li>
-        </ul>
+            <!-- Navegação -->
+            <nav class="nav">
+                <a href="{% url 'home' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'transacoes' %}" class="nav-link">Transações</a>
+                <a href="{% url 'analytics:dados' %}" class="nav-link active">Relatórios</a>
+                <a href="#" class="nav-link">Configurações</a>
+            </nav>
 
+            <!-- Área direita: busca e usuário -->
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <div class="user-avatar">
+                    <!-- <img src="" alt="User"> -->
+                </div>
+            </div>
+        </div>
     </header>
 
 

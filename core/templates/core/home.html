@@ -1,495 +1,292 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'core/css/home.css'%}">
-
+    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <title>Controle Financeiro</title>
+    <title>Controle Financeiro - Dashboard</title>
 </head>
 
 <body>
+    <!-- ========================================
+         HEADER - NAVEGAÇÃO SUPERIOR
+         ======================================== -->
+    <header class="header">
+        <div class="container-header">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <span class="logo-text">Financie.me</span>
+            </div>
 
-    <header class="menu">
+            <!-- Navegação -->
+            <nav class="nav">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="/transacoes/" class="nav-link">Transações</a>
+                <a href="/dados/" class="nav-link">Relatórios</a>
+                <a href="#" class="nav-link">Configurações</a>
+            </nav>
 
-        <ul>
-            <li><a href="">Início</a></li>
-            <li><a href="dados/">Dados</a></li>
-        </ul>
-
+            <!-- Área direita: busca e usuário -->
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <div class="user-avatar">
+                   <!--  <img src="{% static 'core/images/avatar.jpg' %}" alt="User"> -->
+                </div>
+            </div>
+        </div>
     </header>
 
-    <section class="forms-section">
+    <!-- ========================================
+         CONTEÚDO PRINCIPAL
+         ======================================== -->
+    <main class="main-content">
+        <div class="container">
 
-        <div class="exb-tran">
+            <!-- Título da página -->
+            <div class="page-header">
+                <h1>Dashboard Home</h1>
+                <p>Controle suas entradas e saídas de forma inteligente.</p>
+            </div>
 
-            <form method="post" action="">
-                {% csrf_token %}
-                <input type="hidden" name="tipo_form" value="deletar_tran">
-                {% if transacoes %}
-
-                {% for transacao in transacoes %}
-
-                {% if transacao.categoria.tipo == 'receita' %}
-
-                <div class="info-tran">
-                    <div class="info-tran-1">
-                        <input type="checkbox" name="ids_para_deletar_tran" value="{{ transacao.id }}"
-                            id="tran{{ transacao.id }}">
-                        <label for="tran{{ transacao.id }}">{{ transacao.descricao }}</label>
-                        <p>{{ transacao.data.mes }}</p>
+            <!-- ========================================
+                 CARDS DE RESUMO FINANCEIRO
+                 ======================================== -->
+            <div class="summary-cards">
+                <!-- Card: Saldo Total -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">SALDO TOTAL</span>
+                        <div class="card-icon blue">
+                            <i class="bi bi-bank"></i>
+                        </div>
                     </div>
-
-                    <p style="color: green">+ R${{ transacao.valor }}</p>
+                    <h2 class="card-value">R$ 12.450,00</h2>
+                    <p class="card-variation positive">
+                        <i class="bi bi-arrow-up"></i> +2,4% este mês
+                    </p>
                 </div>
 
-                {% else %}
-
-                <div class="info-tran">
-                    <div class="info-tran-1">
-                        <input type="checkbox" name="ids_para_deletar_tran" value="{{ transacao.id }}"
-                            id="tran{{ transacao.id }}">
-                        <label for="tran{{ transacao.id }}">{{ transacao.descricao }}</label>
+                <!-- Card: Receitas do Mês -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">RECEITAS DO MÊS</span>
+                        <div class="card-icon green">
+                            <i class="bi bi-arrow-down-circle"></i>
+                        </div>
                     </div>
-
-                    <p style="color: rgb(185, 0, 0);">- R${{ transacao.valor }}</p>
+                    <h2 class="card-value green-text">R$ 5.200,00</h2>
+                    <p class="card-info">Previsto: R$ 5.500,00</p>
                 </div>
 
-                {% endif %}
-
-                {% endfor %}
-
-                <div class="btns">
-                    <button type="submit">Deletar</button>
+                <!-- Card: Despesas do Mês -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">DESPESAS DO MÊS</span>
+                        <div class="card-icon red">
+                            <i class="bi bi-arrow-up-circle"></i>
+                        </div>
+                    </div>
+                    <h2 class="card-value red-text">R$ 1.840,50</h2>
+                    <p class="card-info">Previsto: R$ 2.100,00</p>
                 </div>
+            </div>
 
-                {% else %}
-
-                <h3>Sem transações</h3>
-
-                {% endif %}
-
-
-
-            </form>
-
-        </div>
-
-
-        <div class="formularios">
-
-            <!-- ======================================
-                    TRANSAÇÕES
-        ====================================== -->
-
-            <div class="area-tran">
+            <!-- ========================================
+                 ÁREA DE FORMULÁRIOS (2 COLUNAS)
+                 ======================================== -->
+            <div class="forms-grid">
                 
-                <form method="post" class="form-container">
-                    {% csrf_token %}
-                    <!-- input pra especificar -->
-                    <input type="hidden" name="tipo_form" value="transacao">
-
-                    <div class="btn-info-tran">
-                        <i class="bi bi-info-circle" onclick="exibirInfoTran(event)"></i>
+                <!-- COLUNA ESQUERDA: Registrar Transação -->
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <div class="form-icon blue">
+                            <i class="bi bi-plus-circle"></i>
+                        </div>
+                        <h3>Registrar Transação</h3>
                     </div>
 
-                    <div class="caixa-info-tran">
-                        <p>Aqui você cadastra transações, de quaquer tipo, uma compra online ou pequena receita, tudo o que você considera relevante para monitorar seu financeiro.</p>
-                    </div>
-                    
-
-                    <h2>Nova Transação</h2>
-
-                    <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" name="descricao_t" maxlength="100" required>
-
-                    <label for="valor">Valor (R$)</label>
-                    <input type="number" id="valor" name="valor" step="0.01" required>
-
-                    <label for="data">Data</label>
-                    <input type="date" id="data" name="data" required>
-
-                    <label for="categoria">Categoria</label>
-                    <select id="categoria" name="categoria" required>
-                        <option value="">Selecione</option>
-                        {% for categoria in categorias %}
-                        <option value="{{ categoria.id }}">
-                            {{ categoria.nome }} ({{ categoria.get_tipo_display }})
-                        </option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="conta">Conta</label>
-                    <select id="conta" name="nome_conta" required>
-                        <option value="">Selecione</option>
-                        {% for conta in contas %}
-                        <option value="{{ conta.id }}">{{ conta.nome }}</option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="observacoes">Observações</label>
-                    <textarea id="observacoes" name="observacoes" rows="4"></textarea>
-
-                    <div class="btns">
-                        <button type="submit">Salvar Transação</button>
-                    </div>
-
-                </form>
-            </div>
-
-            <div class="forms-direita">
-
-                <!-- ======================================
-                            CATEGORIAS
-                ====================================== -->
-
-                <div class="caixa-categoria">
-
-                    <form method="post" class="form-container">
+                    <form method="post" class="transaction-form">
                         {% csrf_token %}
-                        <!-- input pra especificar -->
-                        <input type="hidden" name="tipo_form" value="categoria">
+                        <input type="hidden" name="tipo_form" value="transacao">
 
-                        <div class="btn-info-cate">
-                            <i class="bi bi-info-circle" onclick="exibirInfoCate(event)"></i>
-                        </div>
-
-                        <div class="caixa-info-cate">
-                            <p>Aqui você pode inserir categorias para tipos de desepesas e receitas</p>
-
-                            <p>Exemplo: Gastos médicos, tipo: despesa</p>
-                        </div>
-
-                        <h2>Nova Categoria</h2>
-
-                        <label for="nome">Nome</label>
-                        <input type="text" id="nome" name="nome_cat" maxlength="100" required>
-
-                        <label for="descricao">Descrição</label>
-                        <textarea id="descricao" name="descricao_cat" rows="3"></textarea>
-
-                        <label for="tipo">Tipo</label>
-                        <select id="tipo" name="tipo" required>
-                            <option value="">Selecione</option>
-                            <option value="receita">Receita</option>
-                            <option value="despesa">Despesa</option>
-                        </select>
-
-                        <div class="btns">
-                            <button type="submit">Salvar</button>
-                            <button type="button" onclick="abrirModalOpcs()">Opções</button>
-                        </div>
-
-                    </form>
-
-                    <!-- DIV OPÇÕES -->
-                    <div class="caixa-opcoes">
-
-                        <h3>Categorias</h3>
-
-                        {% for categoria in categorias %}
-                        <div class="opcs-categorias">
-
-                            <!-- VISUAL -->
-                            <div>
-                                <span>{{ categoria.nome }} ({{ categoria.tipo }})</span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="descricao">Descrição</label>
+                                <input type="text" id="descricao" name="descricao_t" 
+                                       placeholder="Ex: Almoço Executivo" maxlength="100" required>
                             </div>
 
+                            <div class="form-group">
+                                <label for="valor">Valor</label>
+                                <input type="text" id="valor" name="valor" 
+                                       placeholder="R$ 0,00" required>
+                            </div>
                         </div>
-                        {% endfor %}
 
-
-                        <div class="btns-opcoes">
-                            <button class="btn-editar" type="button" onclick="abrirModalEditar()">Editar</button>
-                            <button class="btn-excluir" type="button" onclick="abrirModalExcluir()">Excluir</button>
-                            <button class="btn-voltar" type="button" onclick="fecharOpcs()">Voltar</button>
-                        </div>
-                    </div>
-
-                    <!-- DIV EDIÇÃO -->
-                    {% if categorias %}
-                    <div class="caixa-editar">
-                        <h3>Selecione para edição</h3>
-
-                        {% for categoria in categorias %}
-                        <div class="opcs-categorias" id="cat-{{ categoria.id }}">
-
-                            <!-- VISUAL -->
-                            <div class="view-mode">
-                                <span>{{ categoria.nome }} ({{ categoria.tipo }})</span>
-
-                                <span class="icone-editar" onclick="editarCategoria('{{ categoria.id }}')">
-                                    <i class="bi bi-pencil"></i>
-                                </span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data">Data</label>
+                                <input type="date" id="data" name="data" 
+                                       placeholder="mm/dd/yyyy" required>
                             </div>
 
-                            <!-- FORM DE EDIÇÃO -->
-                            <form method="post" class="edit-mode" style="display:none;">
-                                {% csrf_token %}
-                                <input type="hidden" name="tipo_form" value="editar_categoria">
-                                <input type="hidden" name="categoria_id" value="{{ categoria.id }}">
-
-                                <input type="text" name="novo_nome" value="{{ categoria.nome }}" required>
-
-                                <select name="novo_tipo" required>
-                                    <option value="receita" {% if categoria.tipo == "receita" %}selected{% endif %}>
-                                        Receita
+                            <div class="form-group">
+                                <label for="categoria">Categoria</label>
+                                <select id="categoria" name="categoria" required>
+                                    <option value="">Selecione...</option>
+                                    {% for categoria in categorias %}
+                                    <option value="{{ categoria.id }}">
+                                        {{ categoria.nome }} ({{ categoria.get_tipo_display }})
                                     </option>
-                                    <option value="despesa" {% if categoria.tipo == "despesa" %}selected{% endif %}>
-                                        Despesa
-                                    </option>
+                                    {% endfor %}
                                 </select>
-
-                                <div class="btns-edit">
-                                    <button type="submit">Salvar</button>
-                                    <button type="button" onclick="cancelarEdicao('{{ categoria.id }}')">
-                                    Cancelar
-                                    </button>
-                                </div>
-                                
-                            </form>
-
-                        </div>
-                        {% endfor %}
-
-                        <div class="btns-opcoes">
-                            <button type="button" onclick="fecharEdit()">Cancelar</button>
+                            </div>
                         </div>
 
-                    </div>
-
-
-                    {% else %}
-                    <div class="caixa-editar">
-                        <h3>Não há categorias para editar</h3>
-
-                        <div class="btns-opcoes">
-                            <button class="btn-editar-cancelar" type="button" onclick="fecharEdit()">Voltar</button>
-                        </div>
-                        
-                    </div>
-
-                    {% endif %}
-
-                    <!-- DIV EXCLUIR -->
-                    {% if categorias %}
-                    <div class="caixa-excluir">
-                        <h3>Selecione para excluir</h3>
-
-                        <!-- FORM de exclusão -->
-                        <form method="post" action="">
-                            {% csrf_token %}
-                            <input type="hidden" name="tipo_form" value="deletar_categorias">
-
-                            <div class="lista-categorias" id="listaCategorias">
-                                {% for categoria in categorias %}
-                                <div class="opcs-categorias">
-
-                                    <label for="cat{{ categoria.id }}">
-                                        {{ categoria.nome }} ({{ categoria.tipo }})
-                                    </label>
-
-                                    <input type="checkbox" class="checkbox-excluir" name="ids_para_deletar"
-                                        value="{{ categoria.id }}" id="cat{{ categoria.id }}">
-
-                                </div>
+                        <div class="form-group">
+                            <label for="conta">Conta</label>
+                            <select id="conta" name="nome_conta" required>
+                                <option value="">Selecione...</option>
+                                {% for conta in contas %}
+                                <option value="{{ conta.id }}">{{ conta.nome }}</option>
                                 {% endfor %}
-                            </div>
-
-                            <div class="btns-opcoes">
-                                <button class="btn-deletar" type="submit">Deletar</button>
-                                <button class="btn-excluir-cancelar" type="button"
-                                    onclick="fecharExcluir()">Cancelar</button>
-                            </div>
-
-
-                        </form>
-
-                    </div>
-
-                    {% else %}
-
-                    <div class="caixa-excluir">
-                        <h3>Não há categorias para excluir</h3>
-
-                        <div class="btns-opcoes">
-                            <button class="btn-excluir-cancelar" type="button" onclick="fecharExcluir()">Voltar</button>
-                        </div>
-                        
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-                <!-- ======================================
-                            CONTAS
-                 ====================================== -->
-                <div class="caixa-conta">
-
-                    <form method="post" class="form-container">
-                        {% csrf_token %}
-                        <!-- input pra especificar -->
-                        <input type="hidden" name="tipo_form" value="contas">
-
-                        <div class="btn-info-cont">
-                            <i class="bi bi-info-circle" onclick="exibirInfoCont(event)"></i>
+                            </select>
                         </div>
 
-                        <div class="caixa-info-cont">
-                            <p>Aqui você pode inserir contas bancarias de onde você movimenta seu dinheiro, ou se preferir, adicionar uma conta ilustrativa para movimentações gerais.</p>
+                        <div class="form-group">
+                            <label for="observacoes">Observação</label>
+                            <textarea id="observacoes" name="observacoes" 
+                                      placeholder="Detalhes adicionais..." rows="3"></textarea>
                         </div>
 
-                        <h2>Nova Conta</h2>
-
-                        <label for="nome">Nome da Conta</label>
-                        <input type="text" id="nome" name="nome_conta" maxlength="20" required>
-
-                        <label for="saldo_inicial">Saldo Inicial (R$)</label>
-                        <input type="number" id="saldo_inicial" name="saldo_inicial" step="0.01">
-
-                        <div class="btns">
-                            <button type="submit">Salvar</button>
-                            <button type="button" onclick="abrirModalOpcsConta()">Opções</button>
-
-                        </div>
-
+                        <button type="submit" class="btn-primary">
+                            <i class="bi bi-floppy"></i>
+                            Salvar Transação
+                        </button>
                     </form>
-
-                    <!-- DIV OPCOES -->
-                    <div class="caixa-opcoes-conta">
-
-                        <h3>Contas</h3>
-
-                        {% for conta in contas %}
-                        <div class="opcs-contas">
-
-                            <!-- VISUAL -->
-                            <div>
-                                <span>{{ conta.nome }} R$({{ conta.saldo_inicial }})</span>
-                            </div>
-
-                        </div>
-                        {% endfor %}
-
-
-                        <div class="btns-opcoes">
-                            <button class="btn-editar" type="button" onclick="abrirModalEditarConta()">Editar</button>
-                            <button class="btn-excluir" type="button" onclick="abrirModalExcluirConta()">Excluir</button>
-                            <button class="btn-voltar" type="button" onclick="fecharOpcsConta()">Voltar</button>
-                        </div>
-
-                    </div>
-
-                    <!-- EDITAR CONTA -->
-                    {% if contas %}
-                    <div class="caixa-editar-conta">
-                        <h3>Selecione para edição</h3>
-
-                        {% for conta in contas %}
-                        <div class="opcs-contas" id="cont-{{ conta.id }}">
-
-                            <!-- VISUAL -->
-                            <div class="view-mode">
-                                <span>{{ conta.nome }} R$({{ conta.saldo_inicial }})</span>
-
-                                <span class="icone-editar" onclick="editarConta('{{ conta.id }}')">
-                                    <i class="bi bi-pencil"></i>
-                                </span>
-                            </div>
-
-                            <!-- FORM DE EDIÇÃO -->
-                            <form method="post" class="edit-mode" style="display:none;">
-                                {% csrf_token %}
-                                <input type="hidden" name="tipo_form" value="editar_conta">
-                                <input type="hidden" name="conta_id" value="{{ conta.id }}">
-
-                                <input type="text" name="novo_nome_conta" value="{{ conta.nome }}" required>
-
-                                <input type="number" name="novo_saldo_i" value="{{ conta.saldo_inicial }}">
-
-                                <div class="btns-edit">
-                                    <button type="submit">Salvar</button>
-                                    <button type="button" onclick="cancelarEditConta('{{ conta.id }}')">
-                                    Cancelar
-                                    </button>
-                                </div>
-                                
-                            </form>
-
-                        </div>
-                        {% endfor %}
-
-                        <div class="btns-opcoes">
-                            <button type="button" onclick="fecharEditConta()">Cancelar</button>
-                        </div>
-
-                    </div>
-
-
-                    {% else %}
-                    <div class="caixa-editar-conta">
-                        <h3>Não há contas para editar</h3>
-
-                        <div class="btns-opcoes">
-                            <button class="btn-editar-cancelar" type="button" onclick="fecharEditConta()">Voltar</button>
-                        </div>
-                        
-                    </div>
-
-                    {% endif %}
-
-                    <!-- Div Excluir conta -->
-                    {% if contas %}
-                    <div class="caixa-excluir-conta">
-                        <h3>Selecione para excluir</h3>
-
-                        <form method="post" action="">
-                            {% csrf_token %}
-                            <input type="hidden" name="tipo_form" value="deletar_contas">
-
-                            {% for conta in contas %}
-                            <div class="opcs-contas">
-                                <label for="cont{{ conta.id }}">{{ conta.nome }}</label>
-                                <input type="checkbox" name="ids_para_deletar_conta" value="{{ conta.id }}"
-                                    id="cont{{ categoria.id }}">
-                            </div>
-                            {% endfor %}
-
-                            <div class="btns-excluir">
-                                <button type="submit">Deletar</button>
-                                <button type="button" onclick="fecharExcluirConta()">Voltar</button>                              
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                    {% else %}
-
-                    <div class="caixa-excluir-conta">
-                        <h3>Não há contas para excluir</h3>
-                        <button type="button" onclick="fecharExcluirConta()">Voltar</button>
-                    </div>
-
-                    {% endif %}
-
                 </div>
 
+                <!-- COLUNA DIREITA: Cards menores -->
+                <div class="side-cards">
+                    
+                    <!-- Card: Adicionar Categoria -->
+                    <div class="form-card compact">
+                        <div class="form-card-header">
+                            <div class="form-icon purple">
+                                <i class="bi bi-tag"></i>
+                            </div>
+                            <h3>Adicionar Categoria</h3>
+                        </div>
+
+                        <form method="post" class="compact-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="tipo_form" value="categoria">
+
+                            <div class="toggle-group">
+                                <button type="button" class="toggle-btn active" data-type="receita">
+                                    Receita
+                                </button>
+                                <button type="button" class="toggle-btn" data-type="despesa">
+                                    Despesa
+                                </button>
+                            </div>
+                            <input type="hidden" name="tipo" id="tipo_categoria" value="receita">
+
+                            <div class="form-group">
+                                <label for="nome_categoria">NOME DA CATEGORIA</label>
+                                <input type="text" id="nome_categoria" name="nome_cat" 
+                                       placeholder="Ex: Educação" maxlength="100" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descricao_categoria">DESCRICAO</label>
+                                <input type="text" id="descricao_categoria" name="descricao_cat" maxlength="150" placeholder="Opicional">
+                            </div>
+
+                            <button type="submit" class="btn-secondary">
+                                Adicionar
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Card: Adicionar Conta -->
+                    <div class="form-card compact">
+                        <div class="form-card-header">
+                            <div class="form-icon blue">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                            <h3>Adicionar Conta</h3>
+                        </div>
+
+                        <form method="post" class="compact-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="tipo_form" value="contas">
+
+                            <div class="form-group">
+                                <label for="nome_conta">NOME DA CONTA</label>
+                                <input type="text" id="nome_conta" name="nome_conta" 
+                                       placeholder="Ex: Banco Inter" maxlength="20" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="saldo_inicial">SALDO INICIAL</label>
+                                <input type="text" id="saldo_inicial" name="saldo_inicial" 
+                                       placeholder="R$ 0,00">
+                            </div>
+
+                            <button type="submit" class="btn-secondary">
+                                Criar Conta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================
+                 RESUMO FINANCEIRO SEMANAL (GRÁFICO)
+                 ======================================== -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Resumo Financeiro Semanal</h3>
+                    <a href="#" class="link-view-more">
+                        Ver histórico completo <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="chart-container">
+                    <!-- Gráfico de barras simples em CSS -->
+                    <div class="chart-bars">
+                        <div class="chart-bar" style="height: 35%;"></div>
+                        <div class="chart-bar" style="height: 60%;"></div>
+                        <div class="chart-bar" style="height: 45%;"></div>
+                        <div class="chart-bar" style="height: 80%;"></div>
+                        <div class="chart-bar" style="height: 50%;"></div>
+                        <div class="chart-bar" style="height: 40%;"></div>
+                        <div class="chart-bar active" style="height: 100%;"></div>
+                    </div>
+                </div>
             </div>
 
         </div>
+    </main>
 
-        <div class="vazia">
-
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Financie.me - Sistema de Gestão Pessoal</p>
         </div>
-
-    </section>
-
+    </footer>
 
 </body>
 
