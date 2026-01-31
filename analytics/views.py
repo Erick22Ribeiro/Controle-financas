@@ -9,6 +9,7 @@ import pandas as pd #analise
 import plotly.express as px #exibição
 from plotly.offline import plot
 
+
 # Create your views here.
 def dados(request):
 
@@ -93,7 +94,6 @@ def dados(request):
     # Receita, despesa e saldo do mês/ano selecionados
     # =====================================================
     
-
     receita_mes = Transacao.objects.filter(
         categoria__tipo='receita',
         data__month=mes_selecionado,

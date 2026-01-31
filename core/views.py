@@ -5,6 +5,9 @@ from datetime import date
 from django.db.models import Sum
 from django.db.models.functions import ExtractYear
 
+""" from analytics.analysis import resumo_financeiro """
+from analytics import analysis
+
 
 import pandas as pd #analise
 import plotly.express as px #exibição
@@ -13,6 +16,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 def financas(request):
+
+    resumo_financas = analysis.resumo_financeiro()
 
     if request.method == 'POST':
 
@@ -136,6 +141,7 @@ def financas(request):
     transacoes = Transacao.objects.all()
 
     context = {
+        **resumo_financas,
         'categorias': categorias,
         'contas': contas,
         'transacoes': transacoes
