@@ -26,10 +26,10 @@
 
             <!-- Navegação -->
             <nav class="nav">
-                <a href="#" class="nav-link active">Dashboard</a>
-                <a href="/transacoes/" class="nav-link">Transações</a>
-                <a href="/dados/" class="nav-link">Relatórios</a>
-                <a href="#" class="nav-link">Configurações</a>
+                <a href="{% url 'home' %}" class="nav-link active">Dashboard</a>
+                <a href="{% url 'transacoes' %}" class="nav-link">Transações</a>
+                <a href="{% url 'analytics:dados' %}" class="nav-link">Relatórios</a>
+                <a href="{% url 'configuracoes'%}" class="nav-link">Configurações</a>
             </nav>
 
             <!-- Área direita: busca e usuário -->

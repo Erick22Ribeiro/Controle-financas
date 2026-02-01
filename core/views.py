@@ -166,6 +166,29 @@ def transacoes(request):
     return render(request, 'core/transacoes.html', context)
 
 
- #======================== DADOS ================================
+ #======================== CONFIGURAÇÕES ================================
+def configuracoes(request):
 
+    filtro_exibicao = request.GET.get('')
+
+    #Pega a qunatidade de cada um
+    qtd_transacoes = Transacao.objects.count()
+    qtd_categorias = Categoria.objects.count()
+    qtd_contas = Conta.objects.count()
+
+    categorias = Categoria.objects.all()
+    contas = Conta.objects.all()
+    transacoes = Transacao.objects.all()
+
+
+    context = {
+        'qtd_transacoes': qtd_transacoes,
+        'qtd_categorias': qtd_categorias,
+        'qtd_contas': qtd_contas,
+        'categorias': categorias,
+        'contas': contas,
+        'transacoes': transacoes
+    }
+
+    return render(request, 'core/configuracoes.html', context)
 
