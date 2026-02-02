@@ -169,7 +169,29 @@ def transacoes(request):
  #======================== CONFIGURAÇÕES ================================
 def configuracoes(request):
 
-    filtro_exibicao = request.GET.get('')
+    tipo_form = request.POST.get('tipo_form')
+
+    if request.method == 'POST':
+
+        if tipo_form == 'editar_transacao':
+
+            transacao_id = request.POST.get('tran_id')
+
+            nova_desc = request.POST.get('')
+            nova_data = request.POST.get('')
+            novo_valor = request.POST.get('')
+
+            transacao = Transacao.objects.get(Transacao, id = transacao_id)
+
+            transacao.descricao = nova_desc
+            transacao.data = nova_data
+            transacao.valor = novo_valor
+            transacao.save()
+
+
+        
+
+    """ filtro_exibicao = request.GET.get('') """
 
     #Pega a qunatidade de cada um
     qtd_transacoes = Transacao.objects.count()

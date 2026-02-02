@@ -204,7 +204,7 @@ body {
 }
 
 /* Edit Button */
-.edit-btn {
+.edit-btn, .exclude-btn, .save-btn {
     width: 32px;
     height: 32px;
     border-radius: 8px;
@@ -218,8 +218,21 @@ body {
     flex-shrink: 0;
 }
 
+.exclude-btn{
+    /* display: none; */
+}
+
 .edit-btn:hover {
     background: #f8fafc;
+}
+
+.form-edit{
+    /* display: none; */
+}
+
+/* Div de botões de edit e exclude */
+.btns-edit{
+    display: flex;
 }
 
 /* Rows — crescem para preencher a altura */

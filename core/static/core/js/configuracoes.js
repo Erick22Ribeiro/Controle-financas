@@ -16,3 +16,21 @@ function switchTab(button) {
     });
     button.classList.add('active');
 }
+
+
+
+function editarConta(btn) {
+    const contaItem = btn.closest('.conta-item');
+
+    contaItem.querySelector('.view-mode').style.display = 'none';
+    contaItem.querySelector('.edit-mode').style.display = 'block';
+}
+
+function cancelarEdicao(btn) {
+    const contaItem = btn.closest('.conta-item');
+
+    contaItem.querySelector('.edit-mode').style.display = 'none';
+    contaItem.querySelector('.view-mode').style.display = 'flex';
+}
+
+
