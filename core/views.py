@@ -177,11 +177,11 @@ def configuracoes(request):
 
             transacao_id = request.POST.get('tran_id')
 
-            nova_desc = request.POST.get('')
-            nova_data = request.POST.get('')
-            novo_valor = request.POST.get('')
+            nova_desc = request.POST.get('nova_descricao')
+            nova_data = request.POST.get('nova_data')
+            novo_valor = request.POST.get('novo_valor')
 
-            transacao = Transacao.objects.get(Transacao, id = transacao_id)
+            transacao = get_object_or_404(Transacao, id = transacao_id)
 
             transacao.descricao = nova_desc
             transacao.data = nova_data

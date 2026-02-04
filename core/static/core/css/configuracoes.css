@@ -148,7 +148,7 @@ body {
     display: flex;
     align-items: center;
     padding: 32px 40px;
-    min-height: 0; /* permite que flex child shrink corretamente */
+    min-height: 0;
 }
 
 .wrapper {
@@ -203,46 +203,33 @@ body {
     border-radius: 20px;
 }
 
-/* Edit Button */
-.edit-btn, .exclude-btn, .save-btn {
-    width: 32px;
-    height: 32px;
+/* Card Body Scrollable */
+.card-body.scrollable {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.card-body.scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-body.scrollable::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
     border-radius: 8px;
-    border: 1px solid #e8ecf0;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s;
-    flex-shrink: 0;
 }
 
-.exclude-btn{
-    /* display: none; */
-}
-
-.edit-btn:hover {
-    background: #f8fafc;
-}
-
-.form-edit{
-    /* display: none; */
-}
-
-/* Div de botões de edit e exclude */
-.btns-edit{
-    display: flex;
-}
-
-/* Rows — crescem para preencher a altura */
+/* ========================================
+   ROWS - ITENS
+   ======================================== */
 .row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding: 16px 0;
     border-bottom: 1px solid #f1f5f9;
-    flex: 1;
 }
 
 .row:last-of-type {
@@ -256,29 +243,157 @@ body {
 }
 
 /* ========================================
+   MODO VISUALIZAÇÃO E EDIÇÃO
+   ======================================== */
+.view-mode {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.edit-mode {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* ========================================
+   BOTÕES DE AÇÃO
+   ======================================== */
+.edit-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #e8ecf0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+.edit-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #e8ecf0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.save-btn {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.save-btn:hover {
+    background: #10b981;
+    color: white;
+}
+
+.cancel-btn {
+    border-color: #6b7280;
+    color: #6b7280;
+}
+
+.cancel-btn:hover {
+    background: #6b7280;
+    color: white;
+}
+
+.delete-btn {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.delete-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+/* ========================================
+   FORMULÁRIOS DE EDIÇÃO
+   ======================================== */
+.edit-form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.delete-form {
+    display: flex;
+    margin-left: 8px;
+}
+
+.edit-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+}
+
+.edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.edit-inline {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit-input {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1f2937;
+    background: #fff;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-input::placeholder {
+    color: #9ca3af;
+}
+
+/* ========================================
    TRANSAÇÕES
    ======================================== */
-.card-body.scrollable {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    max-height: 400px;      /* ajuste como quiser */
-    overflow-y: auto;
-    padding-right: 6px;    /* evita cortar scrollbar */
-}
-
-/* scroll mais elegante (opcional) */
-.card-body.scrollable::-webkit-scrollbar {
-    width: 6px;
-}
-
-.card-body.scrollable::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 8px;
-}
-
-
-
 .trans-name {
     font-size: 14px;
     font-weight: 600;
@@ -296,23 +411,12 @@ body {
     margin-left: 6px;
 }
 
-.amount.income { color: #10b981; }
-.amount.expense { color: #ef4444; }
-
-.ver-todas {
-    display: block;
-    text-align: center;
-    margin-top: auto;
-    padding-top: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6366f1;
-    cursor: pointer;
-    text-decoration: none;
+.amount.income { 
+    color: #10b981; 
 }
 
-.ver-todas:hover {
-    text-decoration: underline;
+.amount.expense { 
+    color: #ef4444; 
 }
 
 /* ========================================
@@ -370,17 +474,6 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.cat-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
 .cat-name {
     font-size: 14px;
     font-weight: 600;
@@ -406,7 +499,17 @@ body {
         width: 100%;
     }
 
-    .row {
-        flex: none;
+    .edit-layout {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .edit-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .edit-inline {
+        flex-direction: column;
     }
 }
