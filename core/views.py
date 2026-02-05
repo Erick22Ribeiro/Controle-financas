@@ -173,6 +173,7 @@ def configuracoes(request):
 
     if request.method == 'POST':
 
+        #Transações ----------------------
         if tipo_form == 'editar_transacao':
 
             transacao_id = request.POST.get('tran_id')
@@ -188,8 +189,48 @@ def configuracoes(request):
             transacao.valor = novo_valor
             transacao.save()
 
+        elif tipo_form == 'excluir_transacao':
 
-        
+            transacao_id = request.POST.get('tran_id')
+
+            Transacao.objects.filter(id = transacao_id).delete()
+
+
+        #Contas ----------------------
+        elif tipo_form == 'editar_conta':
+
+            conta_id = request.POST.get('conta_id')
+
+            novo_nome = request.POST.get('novo_nome')
+            novo_saldoI = request.POST.get('novo_saldo')
+
+            conta = get_object_or_404(Conta, id = conta_id)
+
+            conta.nome = novo_nome
+            conta.saldo_inicial = novo_saldoI
+            conta.save()
+
+        #Excluir conta
+
+
+        #Categorias ----------------------
+        elif tipo_form == 'editar_categoria':
+
+            categoria_id = request.POST.get('categoria_id')
+
+            novo_nome = request.POST.get('novo_nome')
+            novo_tipo = request.POST.get('novo_tipo')
+
+            categoria = get_object_or_404(Categoria, id = categoria_id)
+            categoria.nome = novo_nome
+            categoria.tipo = novo_tipo
+            categoria.save()
+            
+        elif tipo_form == 'excluir_categoria':
+
+            categoria_id = request.POST.get('categoria_id')
+
+            Categoria.objects.filter(id = categoria_id).delete()
 
     """ filtro_exibicao = request.GET.get('') """
 
@@ -207,6 +248,7 @@ def configuracoes(request):
         'qtd_transacoes': qtd_transacoes,
         'qtd_categorias': qtd_categorias,
         'qtd_contas': qtd_contas,
+        'tipos_c': Categoria.TIPO_CHOICES,
         'categorias': categorias,
         'contas': contas,
         'transacoes': transacoes
