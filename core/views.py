@@ -74,77 +74,9 @@ def financas(request):
             )
 
             return redirect('home')
-        
-        #Editar categoria
-        elif tipo_form == 'editar_categoria':
-
-            categoria_id = request.POST.get('categoria_id')
-            novo_nome = request.POST.get('novo_nome')
-            novo_tipo = request.POST.get('novo_tipo')
-
-
-            categoria = get_object_or_404(Categoria, id=categoria_id) #Pega a categoria da classe categoria cujo id é igual ao passado (categoria_id)
-
-            categoria.nome = novo_nome
-            categoria.tipo = novo_tipo
-            categoria.save()
-
-            return redirect('home')
-
-
-        #Excluir categoria
-        elif tipo_form == 'deletar_categorias':
-
-            ids = request.POST.getlist('ids_para_deletar') #pega uma lista de valores
-
-            Categoria.objects.filter(id__in=ids).delete() 
-
-            return redirect('home')
-        
-
-        #Editar conta
-        elif tipo_form == 'editar_conta':
-
-            conta_id = request.POST.get('conta_id')
-            novo_nome = request.POST.get('novo_nome_conta')
-            novo_saldo_i = request.POST.get('novo_saldo_i')
-
-            conta = get_object_or_404(Conta, id = conta_id)
-
-            conta.nome = novo_nome
-            conta.saldo_inicial = novo_saldo_i
-            conta.save()
-
-            return redirect('home')
-
-        #Excluir conta
-        elif tipo_form == 'deletar_contas':
-
-            ids = request.POST.getlist('ids_para_deletar_conta')
-
-            Conta.objects.filter(id__in=ids).delete() 
-
-            return redirect('home')
-        
-        #Deletar Transação
-        elif tipo_form == 'deletar_tran':
-
-            ids = request.POST.getlist('ids_para_deletar_tran')
-
-            Transacao.objects.filter(id__in=ids).delete() 
-
-            return redirect('home')
-
-
-    categorias = Categoria.objects.all()
-    contas = Conta.objects.all()
-    transacoes = Transacao.objects.all()
 
     context = {
         **resumo_financas,
-        'categorias': categorias,
-        'contas': contas,
-        'transacoes': transacoes
     }
 
     return render(request, 'core/home.html', context)

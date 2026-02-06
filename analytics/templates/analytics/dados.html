@@ -1,18 +1,20 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'analytics/css/dados.css'%}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>Dados</title>
+    <title>Relatórios - Financie.me</title>
 </head>
 
 <body>
 
+    <!-- ========================================
+         HEADER - NAVEGAÇÃO SUPERIOR
+         ======================================== -->
     <header class="header">
         <div class="container-header">
             <!-- Logo -->
@@ -37,107 +39,213 @@
                     <i class="bi bi-search"></i>
                     <input type="text" placeholder="Buscar...">
                 </div>
-                <div class="user-avatar">
-                    <!-- <img src="" alt="User"> -->
-                </div>
+                <div class="user-avatar"></div>
             </div>
         </div>
     </header>
 
+    <!-- ========================================
+         CONTEÚDO PRINCIPAL
+         ======================================== -->
+    <main class="main-content">
+        <div class="container">
 
-    <div class="topo">
-
-        {% if transacoes %}
-        <form class="select-mes" method="get">
-            <label for="mes">Mês</label>
-            <select name="mes" id="mes" onchange="this.form.submit()">
-                <option value="">Todos os meses</option>
-                {% for numero, nome in meses %}
-                    <option value="{{ numero }}" {% if numero == mes_selecionado %}selected{% endif %}>
-                        {{ nome }}
-                    </option>
-                {% endfor %}
-            </select>
-
-            <label for="ano">Ano</label>
-            <select name="ano" id="ano" onchange="this.form.submit()">
-                <option value="">Todos os anos</option>
-                {% for ano in anos_disponiveis %}
-                    <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>
-                        {{ ano }}
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-
-
-        <div class="centrais">
-
-            <div class="saldo-mes">
-                <h3>Saldo do mês</h3>
-                <p>R$ {{ saldo_mes }}</p>
-            </div>
-            <div class="t-receitas">
-                <h3>Receita total</h3>
-                <p>R$ {{ receita_mes }}</p>
+            <!-- Título da página -->
+            <div class="page-header">
+                <h1>Relatórios Financeiros</h1>
+                <p>Análise detalhada das suas movimentações financeiras.</p>
             </div>
 
-            <div class="t-despesas">
-                <h3>Despesa total</h3>
-                <p>R$ {{ despesa_mes }}</p>
+            {% if transacoes %}
+            <!-- ========================================
+                 FILTROS DE PERÍODO
+                 ======================================== -->
+            <div class="filter-section">
+                <form class="filter-form" method="get">
+                    <div class="filter-group">
+                        <label for="mes">
+                            <i class="bi bi-calendar-month"></i>
+                            Mês
+                        </label>
+                        <select name="mes" id="mes" onchange="this.form.submit()">
+                            <option value="">Todos os meses</option>
+                            {% for numero, nome in meses %}
+                                <option value="{{ numero }}" {% if numero == mes_selecionado %}selected{% endif %}>
+                                    {{ nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="ano">
+                            <i class="bi bi-calendar-event"></i>
+                            Ano
+                        </label>
+                        <select name="ano" id="ano" onchange="this.form.submit()">
+                            <option value="">Todos os anos</option>
+                            {% for ano in anos_disponiveis %}
+                                <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>
+                                    {{ ano }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
             </div>
 
-        </div>
-        
+            <!-- ========================================
+                 CARDS DE RESUMO DO PERÍODO
+                 ======================================== -->
+            <div class="summary-cards">
+                <!-- Card: Saldo do Mês -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">SALDO DO MÊS</span>
+                        <div class="card-icon blue">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                    </div>
+                    <h2 class="card-value">R$ {{ saldo_mes }}</h2>
+                    <p class="card-info">Receitas - Despesas</p>
+                </div>
 
-        <div class="info-1">
-            <div class="mes-receita">
-                <p><i class="bi bi-graph-up" style="color: green;"></i> Maior lucro:</p>
-                <strong>{{ mes_maior_receita }} - R${{ valor_maior_receita }}</strong>
+                <!-- Card: Receitas -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">RECEITA TOTAL</span>
+                        <div class="card-icon green">
+                            <i class="bi bi-arrow-down-circle"></i>
+                        </div>
+                    </div>
+                    <h2 class="card-value green-text">R$ {{ receita_mes }}</h2>
+                    <p class="card-variation positive">
+                        <i class="bi bi-graph-up"></i>
+                        Entradas no período
+                    </p>
+                </div>
+
+                <!-- Card: Despesas -->
+                <div class="summary-card">
+                    <div class="card-header">
+                        <span class="card-label">DESPESA TOTAL</span>
+                        <div class="card-icon red">
+                            <i class="bi bi-arrow-up-circle"></i>
+                        </div>
+                    </div>
+                    <h2 class="card-value red-text">R$ {{ despesa_mes }}</h2>
+                    <p class="card-variation negative">
+                        <i class="bi bi-graph-down"></i>
+                        Saídas no período
+                    </p>
+                </div>
             </div>
-            <div class="mes-despesa">
-                
-                <p><i class="bi bi-graph-down" style="color: rgb(185, 0, 0);
-;"></i> Maior prejuizo:</p>
-<strong>{{ mes_maior_despesa }} - R${{ valor_maior_despesa }}</strong>
+
+            <!-- ========================================
+                 CARDS DE INSIGHTS
+                 ======================================== -->
+            <div class="insights-grid">
+                <!-- Card: Maior Lucro -->
+                <div class="insight-card success">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="bi bi-trophy"></i>
+                        </div>
+                        <div class="insight-content">
+                            <span class="insight-label">Maior Lucro</span>
+                            <h3 class="insight-value">{{ mes_maior_receita }}</h3>
+                            <p class="insight-detail">R$ {{ valor_maior_receita }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Maior Prejuízo -->
+                <div class="insight-card danger">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div class="insight-content">
+                            <span class="insight-label">Maior Prejuízo</span>
+                            <h3 class="insight-value">{{ mes_maior_despesa }}</h3>
+                            <p class="insight-detail">R$ {{ valor_maior_despesa }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- ========================================
+                 GRÁFICOS FINANCEIROS
+                 ======================================== -->
+            <div class="charts-grid">
+                <!-- Gráfico 1 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <i class="bi bi-bar-chart"></i>
+                            Evolução Mensal
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        {{ g_1|safe }}
+                    </div>
+                </div>
+
+                <!-- Gráfico 2 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <i class="bi bi-pie-chart"></i>
+                            Despesas por Categoria
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        {{ g_2|safe }}
+                    </div>
+                </div>
+
+                <!-- Gráfico 3 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>
+                            <i class="bi bi-graph-up"></i>
+                            Receitas por Categoria
+                        </h3>
+                    </div>
+                    <div class="chart-container">
+                        {{ g_3|safe }}
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- ========================================
+                 ESTADO VAZIO
+                 ======================================== -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h2>Nenhum dado disponível</h2>
+                <p>Registre transações para visualizar relatórios e análises financeiras.</p>
+                <a href="{% url 'home' %}" class="btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Adicionar Transação
+                </a>
+            </div>
+            {% endif %}
+
         </div>
-        
-    </div>
+    </main>
 
-    {% else %}
-    <div class="topo" style="display: none;">
-
-    </div>
-
-    {% endif %}
-
-    {% if transacoes %}
-    <div class="graficos-topo">
-
-        <div class="g_1">
-            {{ g_1|safe }}
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Financie.me - Sistema de Gestão Pessoal</p>
         </div>
-
-        <div class="g_2">
-            {{ g_2|safe }}
-        </div>
-
-        <div class="g_3">
-            {{ g_3|safe }}
-        </div>
-
-    </div>
-
-    {% else %}
-    <div class="graficos-topo">
-
-        <h3>Registre transações para exibir dados</h3>
-
-    </div>
-
-    {% endif %}
-
+    </footer>
 
 </body>
 
